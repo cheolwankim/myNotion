@@ -10,7 +10,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000", // 개발용
-      "https://my-notion2-5a8hwmtza-cheolwan-kims-projects.vercel.app", // ✅ 배포용 프론트 주소
+      "https://my-notion2.vercel.app", 
     ],
     credentials: true,
   })
