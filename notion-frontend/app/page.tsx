@@ -1,12 +1,10 @@
-import LoginButton from "../components/auth/LoginButton";
+import { Suspense } from "react";
+import HomePageClient from "@/components/HomePageClient";
 
 export default function HomePage() {
   return (
-    <main className="p-6">
-      <h1 className="text-2xl font-bold mb-4">
-        나만의 Notion에 오신 걸 환영합니다
-      </h1>
-      <LoginButton />
-    </main>
+    <Suspense fallback={<div>로딩 중...</div>}>
+      <HomePageClient />
+    </Suspense>
   );
 }
