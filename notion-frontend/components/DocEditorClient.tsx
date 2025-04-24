@@ -5,6 +5,7 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import axios from "@/lib/axios";
 import dynamic from "next/dynamic";
+import { useSidebarRefreshKey } from "@/components/context/SidebarContext";
 
 const TiptapEditor = dynamic(() => import("@/components/docs/TiptapEditor"), {
   ssr: false,
@@ -15,6 +16,8 @@ export default function DocEditorClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const isShared = searchParams.get("share") === "true";
+
+  const refreshSidebar = useSidebarRefreshKey();
 
   const { data: session } = useSession();
   const [title, setTitle] = useState("");
@@ -42,7 +45,8 @@ export default function DocEditorClient() {
         userEmail: session?.user?.email,
       });
       alert("저장 완료!");
-      router.refresh();
+      // router.push(`/docs/${id}?refresh=${Date.now()}`);
+      refreshSidebar(); // ✅ 저장 후 Sidebar 갱신
     } catch {
       alert("저장 실패");
     }
@@ -62,8 +66,14 @@ export default function DocEditorClient() {
         className="w-full p-2 border rounded text-xl font-bold"
         readOnly={isShared || !isOwner}
       />
-      <TiptapEditor content={content} onChange={setContent} readOnly={isShared || !isOwner} />
-      <p className="text-sm text-gray-500">생성일: {new Date(createdAt).toLocaleString()}</p>
+      <TiptapEditor
+        content={content}
+        onChange={setContent}
+        readOnly={isShared || !isOwner}
+      />
+      <p className="text-sm text-gray-500">
+        생성일: {new Date(createdAt).toLocaleString()}
+      </p>
       <p className="text-sm text-gray-500">작성자: {user}</p>
 
       {isOwner && !isShared && (

@@ -1,14 +1,11 @@
-// lib/axios.ts
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL, // ✅ .env.local에서 가져옴
-  withCredentials: true, // 필요 시 (JWT 쿠키 등)
+  baseURL: process.env.NEXT_PUBLIC_API_URL, // ✅ 꼭 설정되어야 함!
+  withCredentials: true, // 필요 시
 });
 
 export default instance;
-
-
 
 
 

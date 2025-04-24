@@ -1,7 +1,10 @@
+// /components/layout/Sidebar.tsx
+
 "use client";
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useSidebar } from "@/components/context/SidebarContext";
 import { useSession, signOut } from "next-auth/react";
 import { usePathname, useSearchParams } from "next/navigation";
 import axios from "@/lib/axios";
@@ -10,9 +13,13 @@ import DocItem from "@/components/docs/DocItem";
 export default function Sidebar() {
   const { data: session } = useSession();
   const [docs, setDocs] = useState([]);
+
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
+  const { refreshDocs } = useSidebar(); // ✅ context 값 가져오기
+  const { refreshKey } = useSidebar(); // ✅ key 값 가져오기
+  
   const fetchDocs = () => {
     if (session?.user?.email) {
       axios.get(`/docs/${session.user.email}`).then((res) => {
@@ -23,7 +30,8 @@ export default function Sidebar() {
 
   useEffect(() => {
     fetchDocs();
-  }, [session, pathname, searchParams]);
+  }, [session, pathname, searchParams, refreshDocs,refreshKey]); // ✅ 여기에 refreshDocs 넣기
+
 
   const createDoc = async () => {
     const res = await axios.post("/docs", {
@@ -34,11 +42,15 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="w-64 h-screen bg-gray-100 p-4 border-r flex flex-col">
+    <aside className="w-64 h-full bg-gray-100 p-4 border-r flex flex-col">
       {/* 상단 링크 */}
       <div className="mb-4 space-y-2 text-sm text-blue-600">
-        <Link href="/" className="block hover:underline">🏠 홈으로 가기</Link>
-        <Link href="/docs" className="block hover:underline">📚 문서 목록 보기</Link>
+        <Link href="/" className="block hover:underline">
+          🏠 홈으로 가기
+        </Link>
+        <Link href="/docs" className="block hover:underline">
+          📚 문서 목록 보기
+        </Link>
       </div>
 
       <h2 className="text-lg font-semibold mb-4">📝 내 문서</h2>

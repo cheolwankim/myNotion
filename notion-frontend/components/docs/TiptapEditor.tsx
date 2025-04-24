@@ -18,13 +18,29 @@ export default function TiptapEditor({ content, onChange, readOnly }: Props) {
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML());
     },
+    editorProps: {
+      attributes: {
+        class: "focus:outline-none",
+      },
+    },
+    injectCSS: true,
+    autofocus: true,
+    immediatelyRender: false,
   });
 
+  // ✅ readOnly 상태가 변경될 때 editable 업데이트
+  useEffect(() => {
+    if (editor) {
+      editor.setEditable(!readOnly);
+    }
+  }, [readOnly, editor]);
+
+  // ✅ content 변경 시 에디터 내용 갱신
   useEffect(() => {
     if (editor && content !== editor.getHTML()) {
       editor.commands.setContent(content);
     }
-  }, [editor]);
+  }, [editor, content]);
 
   return (
     <div className="border p-4 rounded min-h-[300px]">
