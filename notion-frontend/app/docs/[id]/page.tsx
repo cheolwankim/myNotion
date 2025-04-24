@@ -1,23 +1,32 @@
+//app/docs/[id]/page.tsx
 "use client";
 
-import { useEffect, useState } from "react";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState, Suspense } from "react";
+import { useParams, useRouter ,useSearchParams} from "next/navigation";
 import axios from "@/lib/axios";
 import { useSession } from "next-auth/react";
 
 import dynamic from "next/dynamic";
 const TiptapEditor = dynamic(() => import("@/components/docs/TiptapEditor"), {
-  ssr: false, // ✅ 반드시 SSR 끔!
+  ssr: false,
 });
 
-export default function DocPage() {
+export default function DocPageWrapper() {
+  return (
+    <Suspense fallback={<div>로딩 중...</div>}>
+      <DocPage />
+    </Suspense>
+  );
+}
+
+function DocPage() {
   const { id } = useParams();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const isShared = searchParams.get("share") === "true"; // ✅ 공유 모드 여부
+  const isShared = searchParams.get("share") === "true";
 
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState(""); // HTML
+  const [content, setContent] = useState("");
   const [createdAt, setCreatedAt] = useState("");
   const [user, setUser] = useState("");
 
@@ -39,10 +48,10 @@ export default function DocPage() {
       await axios.put(`/docs/${id}`, {
         title,
         content,
-        userEmail: session?.user?.email, // ✅ 작성자 이메일 함께 보냄
+        userEmail: session?.user?.email,
       });
       alert("저장 완료!");
-      router.push(`/docs/${id}?refresh=${Date.now()}`); // 사이드바 강제 갱신
+      router.push(`/docs/${id}?refresh=${Date.now()}`);
     } catch (err) {
       alert("저장 실패");
     }
@@ -54,13 +63,9 @@ export default function DocPage() {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         className="w-full p-2 border rounded text-xl font-bold"
-        readOnly={isShared || !isOwner} // 작성자만 편집 가능
+        readOnly={isShared || !isOwner}
       />
-      <TiptapEditor
-        content={content}
-        onChange={setContent}
-        readOnly={isShared} // ✅ 아래에서 대응
-      />
+      <TiptapEditor content={content} onChange={setContent} readOnly={isShared} />
       <p className="text-sm text-gray-500">
         생성일: {new Date(createdAt).toLocaleString()}
       </p>
