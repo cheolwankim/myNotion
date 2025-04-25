@@ -1,4 +1,4 @@
-# MyNotion - 나만의 노션 클론
+# MyNotion - 나만의 노션 프로젝트
 
 > Next.js 기반으로 구현한 Google 로그인, 문서 작성/편집/공유 기능을 갖춘 **나만의 Notion 프로젝트**입니다.
 
