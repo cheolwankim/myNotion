@@ -28,14 +28,14 @@ export default function TiptapEditor({ content, onChange, readOnly }: Props) {
     immediatelyRender: false,
   });
 
-  // ✅ readOnly 상태가 변경될 때 editable 업데이트
+  // readOnly 상태가 변경될 때 editable 업데이트
   useEffect(() => {
     if (editor) {
       editor.setEditable(!readOnly);
     }
   }, [readOnly, editor]);
 
-  // ✅ content 변경 시 에디터 내용 갱신
+  // content 변경 시 에디터 내용 갱신
   useEffect(() => {
     if (editor && content !== editor.getHTML()) {
       editor.commands.setContent(content);

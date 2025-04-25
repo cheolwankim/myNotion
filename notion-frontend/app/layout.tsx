@@ -15,8 +15,6 @@ export default function RootLayout({
         <SessionProviderWrapper>
           <SidebarProvider>
             <div className="flex h-screen">
-              {" "}
-              {/* ✅ 전체 높이 지정 */}
               <Suspense fallback={<div>사이드바 로딩 중...</div>}>
                 <Sidebar />
               </Suspense>

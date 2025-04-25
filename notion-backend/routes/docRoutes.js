@@ -9,7 +9,7 @@ router.post("/", async (req, res) => {
 
     const newDoc = new Doc({
       title,
-      user: userId, // ✅ 작성자 이메일을 저장
+      user: userId, // 작성자 이메일을 저장
     });
 
     const saved = await newDoc.save();
