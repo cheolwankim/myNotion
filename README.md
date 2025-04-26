@@ -7,8 +7,8 @@
 
 ## 배포 링크
 
-- **Frontend (Vercel)** 👉 [https://my-notion2.vercel.app](https://my-notion2.vercel.app)
-- **Backend (Render)** 👉 https://notion-backend-xxxxx.onrender.com
+- **Frontend (Vercel)** 👉 [https://your-vercel-url.vercel.app](https://my-notion2.vercel.app/)
+- **Backend (Render)** 👉 [https://notion-backend-your.onrender.com](https://notion-backend-g796.onrender.com)
 
 > GitHub Repository 👉 [cheolwankim/myNotion](https://github.com/cheolwankim/myNotion)
 <br />
